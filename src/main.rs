@@ -1,3 +1,5 @@
+mod error;
+
 use std::io::{self, Write};
 
 fn main() -> std::io::Result<()> {
