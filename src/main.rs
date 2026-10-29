@@ -1,4 +1,5 @@
 mod error;
+mod commands;
 
 use std::io::{self, Write};
 
@@ -40,6 +41,12 @@ fn main() -> std::io::Result<()> {
         if cmd.eq_ignore_ascii_case("exit") {
             println!("You typed {}. Are you leaving us so soon? Goodbye to you kind sir!", cmd);
             break;
+        }
+        else if cmd == "pwd" {
+            match commands::ops::pwd() {
+                Ok(()) => continue,
+                Err(err) => eprintln!("shell: {}", err),
+            }
         }
         else {
             println!("You seem to have said: {}", cmd);
