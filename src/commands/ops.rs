@@ -23,7 +23,7 @@ pub fn parent_dir() -> Result<(), ShellErr> {
     Ok(())
 }
 
-// Change Directory
+// Change Directory (this also handles ..)
 pub fn change_dir(target_dir: &str) -> Result<(), ShellErr> {
     let path = env::current_dir()?;
     let target_path = PathBuf::from(target_dir);
@@ -38,7 +38,7 @@ pub fn change_dir(target_dir: &str) -> Result<(), ShellErr> {
         env::set_current_dir(new_path)?;
     }
     else {
-        return Err(ShellErr::DirectoryError(new_path))
+        return Err(ShellErr::DirectoryError(new_path));
     }
 
     Ok(())
