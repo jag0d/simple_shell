@@ -54,6 +54,16 @@ fn main() -> std::io::Result<()> {
                 Err(err) => eprintln!("shell: {}", err),
             }
         }
+        else if cmd == "cd" {
+            let mut path = String::new();
+            stdin.read_line(&mut path).expect("Nah");
+            
+            match commands::ops::change_dir(&path.trim()) {
+                Ok(()) => continue,
+                Err(err) => eprintln!("shell: {}", err),
+            }
+
+        }
         else {
             println!("You seem to have said: {}", cmd);
         }
