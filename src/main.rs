@@ -48,6 +48,12 @@ fn main() -> std::io::Result<()> {
                 Err(err) => eprintln!("shell: {}", err),
             }
         }
+        else if cmd == ".." {
+            match commands::ops::parent_dir() {
+                Ok(()) => continue,
+                Err(err) => eprintln!("shell: {}", err),
+            }
+        }
         else {
             println!("You seem to have said: {}", cmd);
         }
