@@ -1,5 +1,6 @@
 use std::env;
 use std::path::PathBuf;
+use std::fs;
 
 use crate::error::ShellErr;
 
@@ -39,6 +40,26 @@ pub fn change_dir(target_dir: &str) -> Result<(), ShellErr> {
     }
     else {
         return Err(ShellErr::DirectoryError(new_path));
+    }
+
+    Ok(())
+}
+
+// TODO Sort items before displaying
+// List contents of current directory (ls)
+pub fn list_dir() -> Result<(), ShellErr> {
+    // Iterate over entries in current dir
+    for entry in fs::read_dir(".")? {
+        // Unwrap DirEntry as there may be io::Error
+        // when fetching next entry
+        let entry = entry?;
+        
+        // Get OsString for entry
+        let file = entry.file_name();
+
+        // Print directory entry
+        // Has to be valid UTF-8, otherwise replace characters with �
+        println!("{}", file.to_string_lossy());
     }
 
     Ok(())
