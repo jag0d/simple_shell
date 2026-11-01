@@ -2,7 +2,7 @@ use std::env;
 use std::path::PathBuf;
 use std::fs;
 
-use crate::commands::ls_long::{self, MyMetadata};
+use crate::commands::ls_long;
 use crate::error::ShellErr;
 
 // Print Working Directory
@@ -66,6 +66,7 @@ pub fn list_dir() -> Result<(), ShellErr> {
     Ok(())
 }
 
+// TODO sort entries
 // List contents of current directory with more details
 pub fn list_dir_long() -> Result<(), ShellErr> {
     for entry in fs::read_dir(".")? {
@@ -73,7 +74,7 @@ pub fn list_dir_long() -> Result<(), ShellErr> {
         // when fetching next entry
         let file_metadata = ls_long::MyMetadata::new(&entry?)?;
         
-        println!("{}", MyMetadata::format_entry(&file_metadata));
+        println!("{}", file_metadata.format_entry());
     }
 
     Ok(())
