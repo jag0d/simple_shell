@@ -2,6 +2,7 @@ use std::env;
 use std::path::PathBuf;
 use std::fs;
 
+use crate::commands::ls_long::{self, MyMetadata};
 use crate::error::ShellErr;
 
 // Print Working Directory
@@ -60,6 +61,19 @@ pub fn list_dir() -> Result<(), ShellErr> {
         // Print directory entry
         // Has to be valid UTF-8, otherwise replace characters with �
         println!("{}", file.to_string_lossy());
+    }
+
+    Ok(())
+}
+
+// List contents of current directory with more details
+pub fn list_dir_long() -> Result<(), ShellErr> {
+    for entry in fs::read_dir(".")? {
+        // Unwrap DirEntry as there may be io::Error
+        // when fetching next entry
+        let file_metadata = ls_long::MyMetadata::new(&entry?)?;
+        
+        println!("{}", MyMetadata::format_entry(&file_metadata));
     }
 
     Ok(())

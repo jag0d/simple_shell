@@ -70,6 +70,12 @@ fn main() -> std::io::Result<()> {
                 Err(err) => eprintln!("shell: {}", err),
             }
         }
+        else if cmd == "ls -l" {
+            match commands::ops::list_dir_long() {
+                Ok(()) => continue,
+                Err(err) => eprintln!("shell: {}", err),
+            }
+        }
         else {
             println!("You seem to have said: {}", cmd);
         }
