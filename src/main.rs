@@ -13,20 +13,6 @@ fn main() -> std::io::Result<()> {
         print!("$ ");
         io::stdout().flush()?;
 
-        // Read a string (command) from user
-        cmd_buf.clear();
-        let bytes_read = match stdin.read_line(&mut cmd_buf) {
-            Ok(n) => n,
-            Err(e) => {
-                eprintln!("Error reading input: {}", e);
-                break;
-            },
-        };
-
-        //Check if CTRL+D or EOF
-        if bytes_read == 0 { 
-            break; 
-        }
 
         //Trim the input
         let cmd = cmd_buf.trim();
