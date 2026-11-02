@@ -18,7 +18,7 @@ fn main() -> std::io::Result<()> {
 
         // Will exit program upon EOF (CTRL+D)
         // Will continue if only \n is passed
-        match commands::write::get_user_input() {
+        match commands::read_write::get_user_input() {
             Ok(Some(n)) => { cmd_buf = n },
             Ok(None) => break,
             Err(err) => {

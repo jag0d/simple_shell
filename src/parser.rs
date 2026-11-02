@@ -1,5 +1,5 @@
 use crate::error::ShellErr;
-use crate::commands::{ops, write};
+use crate::commands::{ops, read_write};
 
 #[derive(Debug)]
 pub enum Command {
@@ -68,7 +68,7 @@ pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
         Command::CdParent => ops::parent_dir()?,
         Command::Cd(path) => ops::change_dir(&path)?,
         Command::Pwd => ops::pwd()?,
-        Command::WriteFile(path) => write::edit_buf(&path)?,
+        Command::WriteFile(path) => read_write::write_buf(&path)?,
         Command::Help => ops::help(),
         Command::NoCommand => (), 
         Command::Exit => (),
