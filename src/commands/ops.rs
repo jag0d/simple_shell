@@ -26,12 +26,14 @@ pub fn parent_dir() -> Result<(), ShellErr> {
 }
 
 // Change Directory (this also handles ..)
+// Technically parent_dir() is redundant
 pub fn change_dir(target_dir: &str) -> Result<(), ShellErr> {
     let path = env::current_dir()?;
     let target_path = PathBuf::from(target_dir);
     
     // Append the target dir to current dir
     // join() already checks whether target is absolute or relative
+    // Ie checks for / (on Linux at least) 
     // If target is absolute replace path with target path
     let new_path = path.join(target_path);
 
@@ -46,7 +48,6 @@ pub fn change_dir(target_dir: &str) -> Result<(), ShellErr> {
     Ok(())
 }
 
-// TODO Sort items before displaying
 // List contents of current directory (ls)
 pub fn list_dir() -> Result<(), ShellErr> {
     // Iterate over entries in current dir
@@ -66,20 +67,21 @@ pub fn list_dir() -> Result<(), ShellErr> {
     Ok(())
 }
 
-// TODO sort entries
 // List contents of current directory with more details
 pub fn list_dir_long() -> Result<(), ShellErr> {
     for entry in fs::read_dir(".")? {
-        // Unwrap DirEntry as there may be io::Error
-        // when fetching next entry
+        // Unwrap DirEntry as there may be io::Error when fetching next entry
+        // Fetch metadata for directory entry
         let file_metadata = ls_long::MyMetadata::new(&entry?)?;
         
+        // Format output according to display metadata and print
         println!("{}", file_metadata.format_entry());
     }
 
     Ok(())
 }
 
+// List a list of supported functions
 pub fn help() {
     println!("There will be no help.");
 }
