@@ -32,23 +32,23 @@ impl MyMetadata {
     pub fn format_permissions(&self) -> String {
         let is_d = if self.is_dir {'d'} else {'-'};
 
-        let user_write = if self.permissions_mode & 0o400 != 0 {'r'} else {'-'};
-        let user_read = if self.permissions_mode & 0o200 != 0 {'w'} else {'-'};
+        let user_read = if self.permissions_mode & 0o400 != 0 {'r'} else {'-'};
+        let user_write = if self.permissions_mode & 0o200 != 0 {'w'} else {'-'};
         let user_execute = if self.permissions_mode & 0o100 != 0 {'x'} else {'-'};
 
-        let group_write = if self.permissions_mode & 0o040 != 0 {'r'} else {'-'};
-        let group_read = if self.permissions_mode & 0o020 != 0 {'w'} else {'-'};
+        let group_read = if self.permissions_mode & 0o040 != 0 {'r'} else {'-'};
+        let group_write = if self.permissions_mode & 0o020 != 0 {'w'} else {'-'};
         let group_execute = if self.permissions_mode & 0o010 != 0 {'x'} else {'-'};
 
-        let other_write = if self.permissions_mode & 0o004 != 0 {'r'} else {'-'};
-        let other_read = if self.permissions_mode & 0o002 != 0 {'w'} else {'-'};
+        let other_read = if self.permissions_mode & 0o004 != 0 {'r'} else {'-'};
+        let other_write = if self.permissions_mode & 0o002 != 0 {'w'} else {'-'};
         let other_execute = if self.permissions_mode & 0o001 != 0 {'x'} else {'-'};
 
         format!("{}{}{}{}{}{}{}{}{}{}",
             is_d,
-            user_write, user_read, user_execute,
-            group_write, group_read, group_execute,
-            other_write, other_read, other_execute)
+            user_read, user_write, user_execute,
+            group_read, group_write, group_execute,
+            other_read, other_write, other_execute)
     }
 
     // Convert SystemTime to a human readable formatted string
