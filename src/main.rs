@@ -5,7 +5,7 @@ use std::io::{self, Write};
 
 fn main() -> std::io::Result<()> {
 
-    let mut cmd_buf = String::new();
+    let mut cmd_buf;
     let stdin = io::stdin();
     
     loop {
@@ -14,8 +14,12 @@ fn main() -> std::io::Result<()> {
         io::stdout().flush()?;
 
         match commands::write::get_user_input() {
-            Ok(n) => { cmd_buf = n },
-            Err(err) => eprintln!("shell: {}", err),
+            Ok(Some(n)) => { cmd_buf = n },
+            Ok(None) => break,
+            Err(err) => {
+                eprintln!("shell: {}", err);
+                continue;
+            },
         }
 
         //Trim the input

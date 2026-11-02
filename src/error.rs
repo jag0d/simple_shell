@@ -7,7 +7,6 @@ use std::path::PathBuf;
 pub enum ShellErr {
     Io(io::Error),
     DirectoryError(PathBuf),
-    EmptyInput
 }
 
 impl Display for ShellErr {
@@ -15,7 +14,6 @@ impl Display for ShellErr {
         match self {
             ShellErr::Io(err) => write!(f, "IO error: {}", err),
             ShellErr::DirectoryError(path) => write!(f, "No such directory: {}", path.display()),
-            ShellErr::EmptyInput => write!(f, "Empty input: CTRL+D was pressed.")
         }
     }
 }
