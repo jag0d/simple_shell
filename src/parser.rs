@@ -59,20 +59,20 @@ impl Command {
 
         }
     }  
-
-    pub fn execute_command(cmd: Command) -> Result<bool, ShellErr> {
-        match cmd {
-            Command::Ls => ops::list_dir()?,
-            Command::LsLong => ops::list_dir_long()?,
-            Command::CdParent => ops::parent_dir()?,
-            Command::Cd(path) => ops::change_dir(&path)?,
-            Command::Pwd => ops::pwd()?,
-            Command::WriteFile(path) => write::edit_buf(&path)?,
-            Command::Help => ops::help(),
-            Command::NoCommand => (), 
-            Command::Exit => return Ok(false),
-        }
-        Ok(true)
-    } 
 }
+
+pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
+    match cmd {
+        Command::Ls => ops::list_dir()?,
+        Command::LsLong => ops::list_dir_long()?,
+        Command::CdParent => ops::parent_dir()?,
+        Command::Cd(path) => ops::change_dir(&path)?,
+        Command::Pwd => ops::pwd()?,
+        Command::WriteFile(path) => write::edit_buf(&path)?,
+        Command::Help => ops::help(),
+        Command::NoCommand => (), 
+        Command::Exit => (),
+    }
+    Ok(())
+} 
 
