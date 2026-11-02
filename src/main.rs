@@ -13,6 +13,10 @@ fn main() -> std::io::Result<()> {
         print!("$ ");
         io::stdout().flush()?;
 
+        match commands::write::get_user_input() {
+            Ok(n) => { cmd_buf = n },
+            Err(err) => eprintln!("shell: {}", err),
+        }
 
         //Trim the input
         let cmd = cmd_buf.trim();
@@ -58,6 +62,12 @@ fn main() -> std::io::Result<()> {
         }
         else if cmd == "ls -l" {
             match commands::ops::list_dir_long() {
+                Ok(()) => continue,
+                Err(err) => eprintln!("shell: {}", err),
+            }
+        }
+        else if cmd == "write" {
+            match commands::write::edit_buf("./testing.txt") {
                 Ok(()) => continue,
                 Err(err) => eprintln!("shell: {}", err),
             }
