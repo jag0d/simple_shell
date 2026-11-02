@@ -79,3 +79,7 @@ pub fn list_dir_long() -> Result<(), ShellErr> {
 
     Ok(())
 }
+
+pub fn help() {
+    println!("There will be no help.");
+}

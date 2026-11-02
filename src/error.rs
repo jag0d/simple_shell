@@ -7,6 +7,8 @@ use std::path::PathBuf;
 pub enum ShellErr {
     Io(io::Error),
     DirectoryError(PathBuf),
+    EmptyPath,
+    UnsupportedCommand(String)
 }
 
 impl Display for ShellErr {
@@ -14,6 +16,8 @@ impl Display for ShellErr {
         match self {
             ShellErr::Io(err) => write!(f, "IO error: {}", err),
             ShellErr::DirectoryError(path) => write!(f, "No such directory: {}", path.display()),
+            ShellErr::EmptyPath => write!(f, "No file path specified."),
+            ShellErr::UnsupportedCommand(cmd) => write!(f, "Unrecognised command: {}", cmd)
         }
     }
 }

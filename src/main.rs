@@ -1,5 +1,6 @@
 mod error;
 mod commands;
+mod parser;
 
 use std::io::{self, Write};
 
