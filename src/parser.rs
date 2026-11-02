@@ -1,6 +1,7 @@
 use crate::error::ShellErr;
 use crate::commands::{ops, read_write};
 
+// List of implemented functions and placeholders for exceptions
 #[derive(Debug)]
 pub enum Command {
     Ls,
@@ -15,6 +16,7 @@ pub enum Command {
 }
 
 impl Command {
+    // Tokenize command from user and match to supported commands
     pub fn parse_command(cmd_buf: &str) -> Result<Self, ShellErr> {
         let mut cmd= cmd_buf.split_whitespace(); 
 
@@ -34,6 +36,7 @@ impl Command {
                 match path {
                     Some("..") => Ok(Command::CdParent),
                     Some(path) => Ok(Command::Cd(String::from(path))),
+                    // If no argument specified for cd stay in current dir
                     None => Ok(Command::Cd(String::from("."))),
                 }
             },
@@ -45,6 +48,7 @@ impl Command {
 
                 match path {
                     Some(path) => Ok(Command::WriteFile(String::from(path))),
+                    // Write needs filepath, but no panics if there's none
                     None => Err(ShellErr::EmptyPath),
                 }
             },
@@ -52,15 +56,15 @@ impl Command {
             Some("help") => Ok(Command::Help),
 
             Some("exit") => Ok(Command::Exit),
-
+            // No panics if command not recognized
             Some(bad_cmd) => Err(ShellErr::UnsupportedCommand(String::from(bad_cmd))),
-
+            // Sending only \n will do nothing
             None => Ok(Command::NoCommand),
-
         }
     }  
 }
 
+// Execute parsed command
 pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
     match cmd {
         Command::Ls => ops::list_dir()?,
@@ -70,7 +74,9 @@ pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
         Command::Pwd => ops::pwd()?,
         Command::WriteFile(path) => read_write::write_buf(&path)?,
         Command::Help => ops::help(),
+        // Does nothing (main loop continues)
         Command::NoCommand => (), 
+        // Exit handled in main before execute_command() is called
         Command::Exit => (),
     }
     Ok(())
