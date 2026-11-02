@@ -9,14 +9,15 @@ use crate::error::ShellErr;
 
 // Desired data points about directory entry
 pub struct MyMetadata {
-    is_dir: bool,
-    permissions_mode: u32,
-    len_bytes: u64,
-    modified: SystemTime,
-    file_name: OsString,
+    is_dir: bool,               // directory or file
+    permissions_mode: u32,      // permissions (octal code eg. 764)
+    len_bytes: u64,             // size in bytes
+    modified: SystemTime,       // last modification date
+    file_name: OsString,        // name of the entry
 }
 
 impl MyMetadata {
+    // Contruct a metadata object for a directory entry
     pub fn new(dir: &DirEntry) -> Result<Self, ShellErr> {
         let metadata = dir.metadata()?;
         
@@ -29,6 +30,8 @@ impl MyMetadata {
         })
     }
 
+    // Convert the octal permissions code into the standard human readable format
+    // (drwxrwxrwx)
     pub fn format_permissions(&self) -> String {
         let is_d = if self.is_dir {'d'} else {'-'};
 
@@ -52,7 +55,6 @@ impl MyMetadata {
     }
 
     // Convert SystemTime to a human readable formatted string
-    
     pub fn format_datetime(&self) -> String {
         // Convert SystemTime timestamp (just time since UNIX_EPOCH, does not
         // implement Display) into a chrono DateTime timestamp which does
@@ -61,7 +63,7 @@ impl MyMetadata {
         chrono_date_time.format("%Y %b %e %H:%M:%S").to_string()
     }
 
-    // Format the relevant directiry entry data points into a string
+    // Format the relevant directory entry data points into a string for printing
     pub fn format_entry(&self) -> String {
         format!("{} {:>5}B {} {}", 
             self.format_permissions(),
