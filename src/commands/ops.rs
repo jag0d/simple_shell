@@ -83,5 +83,16 @@ pub fn list_dir_long() -> Result<(), ShellErr> {
 
 // List a list of supported functions
 pub fn help() {
-    println!("There will be no help.");
+    print!(r#"
+    SIMPLE SHELL
+    
+    Usage:
+
+    ls              -   list contents of current directory
+    ls -l           -   list contents of current directory with more details
+    cd [path]       -   move to a specified directory (.. for parent directory)
+    pwd             -   print working directory
+    write [file]    -   read text from user line-by-line and write to a specified file
+    help            -   display available commands
+    "#);
 }
