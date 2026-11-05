@@ -9,6 +9,7 @@ pub enum Command {
     CdParent,
     Cd(String),
     Pwd,
+    MkDir(String),
     WriteFile(String),
     ReadFile(String),
     Help,
@@ -44,6 +45,16 @@ impl Command {
 
             Some("pwd") => Ok(Command::Pwd),
 
+            Some("mkdir") => {
+                let path = cmd.next();
+
+                match path {
+                    Some(path) => Ok(Command::MkDir(String::from(path))),
+                    // Write needs filepath, but no panics if there's none
+                    None => Err(ShellErr::EmptyPath),
+                }
+            },
+
             Some("write") => {
                 let path = cmd.next();
 
@@ -62,7 +73,7 @@ impl Command {
                     // Write needs filepath, but no panics if there's none
                     None => Err(ShellErr::EmptyPath),
                 }
-            }
+            },
 
             Some("help") => Ok(Command::Help),
 
@@ -83,6 +94,7 @@ pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
         Command::CdParent => ops::parent_dir()?,
         Command::Cd(path) => ops::change_dir(&path)?,
         Command::Pwd => ops::pwd()?,
+        Command::MkDir(path) => ops::make_directory(&path)?,
         Command::WriteFile(path) => read_write::write_buf(&path)?,
         Command::ReadFile(path) => read_write::read_file(&path)?,
         Command::Help => ops::help(),

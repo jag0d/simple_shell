@@ -92,11 +92,20 @@ pub fn help() {
     ls -l           -   list contents of current directory with more details
     cd [path]       -   move to a specified directory (.. for parent directory)
     pwd             -   print working directory
+    mkdir [path]    -   create a new directory at specified path
     write [file]    -   read text from user line-by-line and write to a specified file
+    read [file]     -   print contents of a specified file
     help            -   display available commands
     "#);
 }
 
-// Additional functionality
+// Bonus commands
 
-// 
+// Create a directory at a specific path
+pub fn make_directory(dir_path: &str) -> Result<(), ShellErr> {
+    // Checks if path exists and if the directory exists
+    // Returns io::Error if it does
+    fs::create_dir(dir_path)?;
+    Ok(())
+}
+
