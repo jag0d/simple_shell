@@ -1,4 +1,4 @@
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::{self, Write};
 
 use crate::error::ShellErr;
@@ -42,6 +42,19 @@ pub fn write_buf(filepath: &str) -> Result<(), ShellErr> {
 
     // Write entire buffer to file
     write!(file, "{}", write_buf)?;
+
+    Ok(())
+}
+
+// Additional functionality
+
+// Read contents of a file
+pub fn read_file(filepath: &str) -> Result<(), ShellErr> {
+    // Open file in read-only mode and read contents to buffer
+    // Until EOF reached
+    let content = fs::read_to_string(filepath)?;
+
+    println!("{}", content);
 
     Ok(())
 }

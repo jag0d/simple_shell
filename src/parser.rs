@@ -10,6 +10,7 @@ pub enum Command {
     Cd(String),
     Pwd,
     WriteFile(String),
+    ReadFile(String),
     Help,
     Exit,
     NoCommand
@@ -53,6 +54,16 @@ impl Command {
                 }
             },
 
+            Some("read") => {
+                let path = cmd.next();
+
+                match path {
+                    Some(path) => Ok(Command::ReadFile(String::from(path))),
+                    // Write needs filepath, but no panics if there's none
+                    None => Err(ShellErr::EmptyPath),
+                }
+            }
+
             Some("help") => Ok(Command::Help),
 
             Some("exit") => Ok(Command::Exit),
@@ -73,6 +84,7 @@ pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
         Command::Cd(path) => ops::change_dir(&path)?,
         Command::Pwd => ops::pwd()?,
         Command::WriteFile(path) => read_write::write_buf(&path)?,
+        Command::ReadFile(path) => read_write::read_file(&path)?,
         Command::Help => ops::help(),
         // Does nothing (main loop continues)
         Command::NoCommand => (), 
