@@ -10,6 +10,9 @@ pub enum Command {
     Cd(String),
     Pwd,
     MkDir(String),
+    Rm(String),
+    RmR(String),
+    RmDir(String),
     WriteFile(String),
     ReadFile(String),
     Help,
@@ -50,10 +53,35 @@ impl Command {
 
                 match path {
                     Some(path) => Ok(Command::MkDir(String::from(path))),
-                    // Write needs filepath, but no panics if there's none
                     None => Err(ShellErr::EmptyPath),
                 }
             },
+
+            Some("rm") => {
+                let first_arg = cmd.next();
+
+                match first_arg {
+                    Some("-r") => {
+                        let path = cmd.next();
+                        
+                        match path {
+                            Some(path) => Ok(Command::RmR(String::from(path))),
+                            None => Err(ShellErr::EmptyPath),
+                        }
+                    },
+                    Some(path) => Ok(Command::Rm(String::from(path))),
+                    None => Err(ShellErr::EmptyPath),
+                }
+            },
+
+            Some("rmdir") => {
+                let path = cmd.next();
+
+                match path {
+                    Some(path) => Ok(Command::RmDir(String::from(path))),
+                    None => Err(ShellErr::EmptyPath),
+                }
+            }
 
             Some("write") => {
                 let path = cmd.next();
@@ -70,7 +98,6 @@ impl Command {
 
                 match path {
                     Some(path) => Ok(Command::ReadFile(String::from(path))),
-                    // Write needs filepath, but no panics if there's none
                     None => Err(ShellErr::EmptyPath),
                 }
             },
@@ -95,6 +122,9 @@ pub fn execute_command(cmd: Command) -> Result<(), ShellErr> {
         Command::Cd(path) => ops::change_dir(&path)?,
         Command::Pwd => ops::pwd()?,
         Command::MkDir(path) => ops::make_directory(&path)?,
+        Command::Rm(path) => ops::remove_entry(&path, false)?,
+        Command::RmR(path) => ops::remove_entry(&path, true)?,
+        Command::RmDir(path) => ops::remove_directory(&path)?,
         Command::WriteFile(path) => read_write::write_buf(&path)?,
         Command::ReadFile(path) => read_write::read_file(&path)?,
         Command::Help => ops::help(),

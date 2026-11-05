@@ -101,11 +101,31 @@ pub fn help() {
 
 // Bonus commands
 
-// Create a directory at a specific path
+// Create specified directory
 pub fn make_directory(dir_path: &str) -> Result<(), ShellErr> {
     // Checks if path exists and if the directory exists
     // Returns io::Error if it does
     fs::create_dir(dir_path)?;
+    Ok(())
+}
+
+// Remove specified directory (must be empty)
+pub fn remove_directory(dir_path: &str) -> Result<(), ShellErr> {
+    fs::remove_dir(dir_path)?;
+    Ok(())
+}
+
+// Remove specified file (or directory recursively if -r option selected)
+pub fn remove_entry(dir_path: &str, is_recursive: bool) -> Result<(), ShellErr> {
+    // Path needs to be of type Path to call is_dir() on it
+    let path = PathBuf::from(dir_path);
+    // If -r specified then can remove directory recursively or file
+    if is_recursive && path.is_dir() { fs::remove_dir_all(path)? }
+    else {
+        // Can only remove file if -r not specified
+        fs::remove_file(path)?;
+    }
+
     Ok(())
 }
 
