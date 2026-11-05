@@ -93,10 +93,14 @@ pub fn help() {
     cd [path]       -   move to a specified directory (.. for parent directory)
     pwd             -   print working directory
     mkdir [path]    -   create a new directory at specified path
+    rm [path]       -   remove specified file
+    rm -r [path]    -   recursively remove specified directory (or file)
+    rmdir [path]    -   remove specified empty directory
     write [file]    -   read text from user line-by-line and write to a specified file
     read [file]     -   print contents of a specified file
     help            -   display available commands
-    "#);
+    exit            -   exit the shell
+"#);
 }
 
 // Bonus commands

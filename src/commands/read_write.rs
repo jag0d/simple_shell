@@ -46,7 +46,7 @@ pub fn write_buf(filepath: &str) -> Result<(), ShellErr> {
     Ok(())
 }
 
-// Additional functionality
+// Bonus commands
 
 // Read contents of a file
 pub fn read_file(filepath: &str) -> Result<(), ShellErr> {
